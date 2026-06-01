@@ -1,31 +1,58 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native'
+// App.js — configuracion de navegacion de KiPedia
 import { StatusBar } from 'expo-status-bar'
-import Encabezado from './Componentes/Encabezado.js'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+
+// Importar todas las pantallas
 import Personajes from './Pantallas/Personajes.js'
 import FichaPersonaje from './Pantallas/FichaPersonaje.js'
 import Sagas from './Pantallas/Sagas.js'
 import Favoritos from './Pantallas/Favoritos.js'
 import Busqueda from './Pantallas/Busqueda.js'
 
-export default function App() {
-  return (
-    <SafeAreaView style={estilos.app}>
-      <Encabezado titulo="Inicio" />
-      <ScrollView>
-        <Personajes />
-        <FichaPersonaje />
-        <Sagas />
-        <Favoritos />
-        <Busqueda />
-      </ScrollView>
-      <StatusBar style="light" />
-    </SafeAreaView>
-  )
+const Stack = createNativeStackNavigator()
+
+// Opciones de estilo comunes para todas las pantallas
+const opcionesHeader = {
+  headerStyle: { backgroundColor: '#1E293B' },
+  headerTintColor: '#F59E0B',
+  headerTitleStyle: { fontWeight: 'bold' },
 }
 
-const estilos = StyleSheet.create({
-  app: {
-    flex: 1,
-    backgroundColor: '#0F172A',
-  },
-})
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Personajes"
+        screenOptions={opcionesHeader}
+      >
+        <Stack.Screen
+          name="Personajes"
+          component={Personajes}
+          options={{ title: 'KiPedia — Personajes' }}
+        />
+        <Stack.Screen
+          name="FichaPersonaje"
+          component={FichaPersonaje}
+          options={({ route }) => ({ title: route.params?.personaje?.name || 'Personaje' })}
+        />
+        <Stack.Screen
+          name="Sagas"
+          component={Sagas}
+          options={{ title: 'Sagas' }}
+        />
+        <Stack.Screen
+          name="Favoritos"
+          component={Favoritos}
+          options={{ title: 'Mis Favoritos' }}
+        />
+        <Stack.Screen
+          name="Busqueda"
+          component={Busqueda}
+          options={{ title: 'Buscar' }}
+        />
+      </Stack.Navigator>
+      <StatusBar style="light" />
+    </NavigationContainer>
+  )
+}
