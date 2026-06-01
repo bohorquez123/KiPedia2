@@ -1,3 +1,4 @@
+import { View, Text, StyleSheet } from 'react-native'
 export default function Lista() { 
   return ( 
     <View style={estilos.seccion}> 
