@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   View, Text, FlatList, TextInput,
   TouchableOpacity, ActivityIndicator,
@@ -11,6 +11,7 @@ export default function Personajes({ navigation }) {
 
   // Estado: lista de personajes recibida de la API
   const [personajes, setPersonajes] = useState([])
+
   // Estado: texto que escribe el usuario en la barra de busqueda
   const [busqueda, setBusqueda] = useState('')
   // Estado: raza seleccionada como filtro ('Todas' por defecto)
@@ -22,6 +23,10 @@ export default function Personajes({ navigation }) {
 
   // Razas disponibles para filtrar
   const razas = ['Todas', 'Saiyan', 'Namekian', 'Human', 'Frieza Race', 'Android']
+  const [paginaActual, setPaginaActual] = useState(1)
+  const [hayMasPaginas, setHayMasPaginas] = useState(true)
+  const [cargandoMas, setCargandoMas] = useState(false)
+
 
   // Llamar a la API cuando la pantalla aparece
   useEffect(() => {
@@ -29,20 +34,35 @@ export default function Personajes({ navigation }) {
   }, [])
 
   // Funcion que llama a la API y guarda los personajes en el estado
-  async function cargarPersonajes() {
-    try {
-      setCargando(true)
-      setError(null)
-      const respuesta = await fetch(`${API_URL}?limit=50&page=1`)
-      if (!respuesta.ok) throw new Error('Error al conectar con la API')
-      const datos = await respuesta.json()
+  async function cargarPersonajes(pagina = 1) {
+  try {
+    if (pagina === 1) { setCargando(true) } else { setCargandoMas(true) }
+    setError(null)
+    const respuesta = await fetch(`${API_URL}?limit=20&page=${pagina}`)
+    if (!respuesta.ok) throw new Error('Error al conectar con la API')
+    const datos = await respuesta.json()
+    if (pagina === 1) {
       setPersonajes(datos.items)
-    } catch (err) {
-      setError('No se pudo cargar la lista de personajes. Verifica tu conexion.')
-    } finally {
-      setCargando(false)
+    } else {
+      setPersonajes(prev => [...prev, ...datos.items]) // agregar a la lista existente
     }
+    setHayMasPaginas(pagina < datos.meta.totalPages)
+    setPaginaActual(pagina)
+  } catch (err) {
+    setError('No se pudo cargar la lista de personajes.')
+  } finally {
+    setCargando(false)
+    setCargandoMas(false)
   }
+}
+
+// Agrega esta funcion para cargar la siguiente pagina:
+function cargarMas() {
+  if (!cargandoMas && hayMasPaginas) {
+    cargarPersonajes(paginaActual + 1)
+  }
+}
+
 
   // Filtrar personajes segun busqueda y raza seleccionada
   const personajesFiltrados = personajes.filter(p => {
@@ -72,27 +92,34 @@ export default function Personajes({ navigation }) {
     )
   }
 
-  // Pantalla de carga
   if (cargando) {
-    return (
-      <View style={estilos.centrado}>
-        <ActivityIndicator size="large" color="#F59E0B" />
-        <Text style={estilos.textoCarga}>Cargando personajes...</Text>
-      </View>
-    )
-  }
+  return (
+    <View style={estilos.centrado}>
+      <ActivityIndicator size="large" color="#F59E0B" />
+      <Text style={estilos.textoCarga}>Cargando personajes...</Text>
+      <Text style={[estilos.textoCarga, { fontSize: 12, marginTop: 4 }]}>
+        Conectando con la API de Dragon Ball
+      </Text>
+    </View>
+  )
+}
 
-  // Pantalla de error
-  if (error) {
-    return (
-      <View style={estilos.centrado}>
-        <Text style={estilos.textoError}>{error}</Text>
-        <TouchableOpacity style={estilos.botonReintentar} onPress={cargarPersonajes}>
-          <Text style={estilos.textoBoton}>Reintentar</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+// Reemplaza el bloque 'if (error)' por este:
+if (error) {
+  return (
+    <View style={estilos.centrado}>
+      <Text style={{ fontSize: 40, marginBottom: 16 }}>⚠️</Text>
+      <Text style={estilos.textoError}>{error}</Text>
+      <Text style={[estilos.textoError, { fontSize: 12, marginTop: 8 }]}>
+        Verifica tu conexion a internet
+      </Text>
+      <TouchableOpacity style={estilos.botonReintentar} onPress={cargarPersonajes}>
+        <Text style={estilos.textoBoton}>Reintentar</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
 
   return (
     <View style={estilos.pantalla}>
@@ -144,6 +171,11 @@ export default function Personajes({ navigation }) {
           renderItem={({ item }) => <TarjetaPersonaje item={item} />}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
+          onEndReached={cargarMas}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={cargandoMas ?
+             <ActivityIndicator color="#F59E0B" style={{ padding: 16 }} /> : null}
+
         />
       )}
     </View>
@@ -153,7 +185,7 @@ export default function Personajes({ navigation }) {
 const estilos = StyleSheet.create({
   pantalla: { flex: 1, backgroundColor: '#0F172A', padding: 16 },
   centrado: { flex: 1, justifyContent: 'center', alignItems: 'center',
-    backgroundColor: '#0F172A', padding: 20 },
+    backgroundColor: '#0F172A', padding: 2 },
   busqueda: {
     backgroundColor: '#1E293B', borderRadius: 8, padding: 12,
     color: '#E2E8F0', fontSize: 16, borderWidth: 1, borderColor: '#334155',
@@ -161,7 +193,7 @@ const estilos = StyleSheet.create({
   },
   filtrosContenedor: { marginBottom: 8, flexGrow: 0 },
   chip: {
-    paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20,
+    paddingHorizontal: 14, paddingVertical: 14, borderRadius: 20,
     backgroundColor: '#1E293B', marginRight: 8,
     borderWidth: 1, borderColor: '#334155',
   },
