@@ -1,20 +1,31 @@
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { useFavoritos } from '../contextos/FavoritosContext'
 
+// Dentro del componente FichaPersonaje, despues de obtener personaje:
 export default function FichaPersonaje({ route }) {
-  // Recibir el personaje enviado desde la pantalla Personajes
   const { personaje } = route.params
+  const { esFavorito, alternarFavorito } = useFavoritos()
+  const favorito = esFavorito(personaje.id)
+
+
 
   return (
     <ScrollView style={estilos.pantalla}>
-
-      {/* Imagen del personaje */}
       <View style={estilos.headerPersonaje}>
-        <Image
-          source={{ uri: personaje.image }}
-          style={estilos.imagenGrande}
-          resizeMode="contain"
-        />
+        <Image source={{ uri: personaje.image }} style={estilos.imagenGrande} resizeMode="contain" />
+        <TouchableOpacity
+          style={estilos.botonFavorito}
+          onPress={() => alternarFavorito(personaje)}
+        >
+          <Ionicons
+            name={favorito ? 'heart' : 'heart-outline'}
+            size={28}
+            color={favorito ? '#EF4444' : '#94A3B8'}
+          />
+        </TouchableOpacity>
       </View>
+
+      
 
       {/* Nombre y raza */}
       <View style={estilos.seccion}>
