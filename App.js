@@ -6,14 +6,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 
 // Importar todas las pantallas
-import Personajes from './pantallas/PersonajesStack/Personajes.js'
-import FichaPersonaje from './pantallas/PersonajesStack/FichaPersonaje.js'
-import Sagas from './pantallas/SagasStack/Sagas.js'
+import Personajes from './Pantallas/PersonajesStack/Personajes.js'
+import FichaPersonaje from './Pantallas/PersonajesStack/FichaPersonaje.js'
+import Sagas from './Pantallas/SagasStack/Sagas.js'
 import DetalleSaga from './Pantallas/SagasStack/DetalleSaga.js'
-import Tecnicas from './pantallas/TecnicasStack/Tecnicas.js'
-import DetalleTecnica from './pantallas/TecnicasStack/DetallesTecnicas.js'
-import Favoritos from './pantallas/Favoritos.js'
-import Busqueda from './pantallas/Busqueda.js'
+import Tecnicas from './Pantallas/TecnicasStack/Tecnicas.js'
+import DetalleTecnica from './Pantallas/TecnicasStack/DetallesTecnicas.js'
+import Favoritos from './Pantallas/Favoritos.js'
+import Busqueda from './Pantallas/Busqueda.js'
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -54,7 +54,7 @@ function TecnicasStack() {
   return (
     <Stack.Navigator screenOptions={opcionesHeader}>
       <Stack.Screen name="ListaTecnicas" component={Tecnicas}
-        options={{ title: 'Técnicas' }} />
+        options={{ title: 'Tecnicas' }} />
       <Stack.Screen name="DetalleTecnica" component={DetalleTecnica}
         options={({ route }) => ({ title: route.params?.tecnica?.name || 'Técnica' })} />
     </Stack.Navigator>
