@@ -4,8 +4,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
+import { FavoritosProvider } from './contextos/FavoritosContext'
 
 // Importar todas las pantallas
+
 import Personajes from './Pantallas/PersonajesStack/Personajes.js'
 import FichaPersonaje from './Pantallas/PersonajesStack/FichaPersonaje.js'
 import Sagas from './Pantallas/SagasStack/Sagas.js'
@@ -63,6 +65,8 @@ function TecnicasStack() {
 
 export default function App() {
   return (
+    <FavoritosProvider>
+    
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -105,5 +109,6 @@ export default function App() {
       </Tab.Navigator>
       <StatusBar style="light" />
     </NavigationContainer>
+    </FavoritosProvider>
   )
 }
