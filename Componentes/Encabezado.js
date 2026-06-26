@@ -12,7 +12,7 @@ export default function Encabezado({ titulo }) {
 const estilos = StyleSheet.create({
   encabezado: {
     padding: 16,
-    backgroundColor: '#1E293B',
+    backgroundColor: '#091932',
     borderBottomWidth: 1,
     borderBottomColor: '#F59E0B',
     flexDirection: 'row',
