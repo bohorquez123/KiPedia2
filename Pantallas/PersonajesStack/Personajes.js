@@ -6,6 +6,8 @@ import {
 } from 'react-native'
 import SkeletonTarjeta from '../../Componentes/SkeletonTarjeta'
 import TarjetaAnimada from '../../Componentes/TarjetaAnimada'
+import { memo } from 'react'
+import { useCallback } from 'react'
 const API_URL = 'https://dragonball-api.com/api/characters'
 
 export default function Personajes({ navigation }) {
@@ -56,6 +58,9 @@ export default function Personajes({ navigation }) {
     setCargandoMas(false)
   }
 }
+const manejarToque = useCallback((item) => {
+  navigation.navigate('FichaPersonaje', { personaje: item })
+}, [navigation])
 
 // Agrega esta funcion para cargar la siguiente pagina:
 function cargarMas() {
@@ -169,11 +174,12 @@ if (error) {
           data={personajesFiltrados}
           keyExtractor={item => item.id.toString()}
          
-          renderItem={({ item, index }) => (
-         <TarjetaAnimada index={index}>
-         <TarjetaPersonaje item={item} />
-         </TarjetaAnimada>
-         )}
+        renderItem={({ item, index }) => (
+  <TarjetaAnimada index={index}>
+    <TarjetaPersonaje item={item} onPress={() => manejarToque(item)} />
+  </TarjetaAnimada>
+)}
+
 
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
