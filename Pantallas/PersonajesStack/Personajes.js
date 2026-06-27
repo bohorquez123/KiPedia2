@@ -4,7 +4,8 @@ import {
   TouchableOpacity, ActivityIndicator,
   StyleSheet, Image
 } from 'react-native'
-import SkeletonTarjeta from '../../Componentes/SkeletonTargeta'
+import SkeletonTarjeta from '../../Componentes/SkeletonTarjeta'
+import TarjetaAnimada from '../../Componentes/TarjetaAnimada'
 const API_URL = 'https://dragonball-api.com/api/characters'
 
 export default function Personajes({ navigation }) {
@@ -165,15 +166,16 @@ if (error) {
         </View>
       ) : (
         <FlatList
-          data={personajesFiltrados}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => <TarjetaPersonaje item={item} />}
+          
+       data={personajesFiltrados}
+       keyExtractor={item => item.id.toString()}
+       renderItem={({ item, index }) => (
+       <TarjetaAnimada index={index}>
+          <TarjetaPersonaje item={item} />
+         </TarjetaAnimada>
+         )}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          onEndReached={cargarMas}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={cargandoMas ?
-             <ActivityIndicator color="#F59E0B" style={{ padding: 16 }} /> : null}
+            contentContainerStyle={{ paddingBottom: 20 }}
 
         />
       )}
