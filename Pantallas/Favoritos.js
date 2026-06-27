@@ -2,7 +2,7 @@
 // Historia de usuario: guardar y gestionar personajes favoritos
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { useFavoritos } from '../contextos/FavoritosContext'
+import { useFavoritos } from './Contextos/FavoritosContext'
 
 export default function Favoritos({ navigation }) {
   const { favoritos, cargando, alternarFavorito } = useFavoritos()

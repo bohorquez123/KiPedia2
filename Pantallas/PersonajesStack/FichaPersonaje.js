@@ -1,5 +1,13 @@
 import { Ionicons } from '@expo/vector-icons'
-import { useFavoritos } from '../contextos/FavoritosContext'
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
+import { useFavoritos } from '../Contextos/FavoritosContext.js'
 
 // Dentro del componente FichaPersonaje, despues de obtener personaje:
 export default function FichaPersonaje({ route }) {

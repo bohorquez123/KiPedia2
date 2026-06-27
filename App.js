@@ -4,10 +4,11 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { FavoritosProvider } from './contextos/FavoritosContext'
+
 
 // Importar todas las pantallas
 
+import { FavoritosProvider } from './Pantallas/Contextos/FavoritosContext.js'
 import Personajes from './Pantallas/PersonajesStack/Personajes.js'
 import FichaPersonaje from './Pantallas/PersonajesStack/FichaPersonaje.js'
 import Sagas from './Pantallas/SagasStack/Sagas.js'

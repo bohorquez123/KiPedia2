@@ -4,7 +4,7 @@ import {
   TouchableOpacity, ActivityIndicator,
   StyleSheet, Image
 } from 'react-native'
-
+import SkeletonTarjeta from '../../Componentes/SkeletonTargeta'
 const API_URL = 'https://dragonball-api.com/api/characters'
 
 export default function Personajes({ navigation }) {
@@ -94,15 +94,14 @@ function cargarMas() {
 
   if (cargando) {
   return (
-    <View style={estilos.centrado}>
-      <ActivityIndicator size="large" color="#F59E0B" />
-      <Text style={estilos.textoCarga}>Cargando personajes...</Text>
-      <Text style={[estilos.textoCarga, { fontSize: 12, marginTop: 4 }]}>
-        Conectando con la API de Dragon Ball
-      </Text>
+    <View style={estilos.pantalla}>
+      {[1, 2, 3, 4, 5, 6].map(i => (
+        <SkeletonTarjeta key={i} />
+      ))}
     </View>
   )
 }
+
 
 // Reemplaza el bloque 'if (error)' por este:
 if (error) {
