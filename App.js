@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 
 // Importar todas las pantallas
-
+import Home from './Pantallas/Home.js'
 import { FavoritosProvider } from './Pantallas/Contextos/FavoritosContext.js'
 import Personajes from './Pantallas/PersonajesStack/Personajes.js'
 import FichaPersonaje from './Pantallas/PersonajesStack/FichaPersonaje.js'
@@ -80,6 +80,7 @@ export default function App() {
           tabBarInactiveTintColor: '#64748B',
           tabBarIcon: ({ focused, color, size }) => {
             const iconos = {
+              Home: focused ? 'home' : 'home-outline',
               Personajes: focused ? 'people' : 'people-outline',
               Sagas: focused ? 'book' : 'book-outline',
               Tecnicas: focused ? 'flash' : 'flash-outline',
@@ -90,6 +91,7 @@ export default function App() {
           },
         })}
       >
+        <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Tab.Screen name="Personajes" component={PersonajesStack} />
         <Tab.Screen name="Sagas" component={SagasStack} />
         <Tab.Screen name="Tecnicas" component={TecnicasStack} />
