@@ -109,6 +109,7 @@ export default function App() {
             headerTintColor: '#F59E0B',
             headerTitle: 'Buscar'
           }} />
+          
       </Tab.Navigator>
       <StatusBar style="light" />
     </NavigationContainer>
