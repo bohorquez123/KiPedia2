@@ -166,16 +166,21 @@ if (error) {
         </View>
       ) : (
         <FlatList
-          
-       data={personajesFiltrados}
-       keyExtractor={item => item.id.toString()}
-       renderItem={({ item, index }) => (
-       <TarjetaAnimada index={index}>
-          <TarjetaPersonaje item={item} />
+          data={personajesFiltrados}
+          keyExtractor={item => item.id.toString()}
+         
+          renderItem={({ item, index }) => (
+         <TarjetaAnimada index={index}>
+         <TarjetaPersonaje item={item} />
          </TarjetaAnimada>
          )}
+
           showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          onEndReached={cargarMas}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={cargandoMas ?
+             <ActivityIndicator color="#F59E0B" style={{ padding: 16 }} /> : null}
 
         />
       )}
